@@ -24,14 +24,13 @@ struct Result: Codable {
     let latitude, longitude: Double
     let elevation: Int
     let featureCode, countryCode: String
-    let admin1ID: Int
-    let admin2ID, admin3ID: Int?
+    let admin1ID, admin2ID, admin3ID: Int?
     let timezone: String
-    let population: Int
+    let population: Int?
     let postcodes: [String]?
     let countryID: Int
-    let country, admin1: String
-    let admin2, admin3: String?
+    let country: String
+    let admin1, admin2, admin3: String?
 
     enum CodingKeys: String, CodingKey {
         case id, name, latitude, longitude, elevation

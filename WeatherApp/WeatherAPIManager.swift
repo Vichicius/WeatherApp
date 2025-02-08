@@ -46,7 +46,8 @@ enum APIError: Error {
 }
 
 class WeatherAPIManager {
-    static func getCoords(name: String) async throws -> (lat: String, lon: String) {
+    
+    static func getCoords(name: String) async throws -> (lat: String, lon: String, name: String) {
         guard let url = URL(string: APIEndpoints.location(name: name)) else {
             throw APIError.invalidURL
         }
@@ -59,12 +60,12 @@ class WeatherAPIManager {
         
         do {
             let data = try JSONDecoder().decode(LocationCoords.self, from: data)
-            guard let location = data.results.sorted(by: {$0.population > $1.population}).first else {
+            guard let location = data.results.sorted(by: {$0.population ?? 0 > $1.population ?? 0}).first else {
                 throw APIError.invalidData
             }
             print("Most populated location with that name: \(location.name)")
             print("lat: \(location.latitude), lon: \(location.longitude)")
-            return ("\(location.latitude)", "\(location.longitude)")
+            return ("\(location.latitude)", "\(location.longitude)", "\(location.name)")
         } catch {
             throw APIError.invalidData
         }
@@ -89,5 +90,5 @@ class WeatherAPIManager {
             throw APIError.invalidData
         }
     }
+    
 }
-

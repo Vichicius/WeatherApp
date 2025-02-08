@@ -8,9 +8,9 @@
 
 struct LocationClimate: Codable {
     let latitude, longitude, generationtimeMS: Double
-    let utcOffsetSeconds: Int
+    let utcOffsetSeconds: Double
     let timezone, timezoneAbbreviation: String
-    let elevation: Int
+    let elevation: Double
     let currentUnits: CurrentUnits
     let current: Current
 
@@ -29,7 +29,7 @@ struct LocationClimate: Codable {
 // MARK: - Current
 struct Current: Codable {
     let time: String
-    let interval, temperature2M: Int
+    let interval, temperature2M: Double
     let apparentTemperature: Double
 
     enum CodingKeys: String, CodingKey {
