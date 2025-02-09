@@ -8,28 +8,13 @@
 import SwiftUI
 
 struct ListView: View {
-    @State var searchText: String = ""
-    
-    let locations = ["Alava","Albacete","Alicante","Almería","Asturias","Avila","Badajoz","Barcelona","Burgos","Cáceres",
-   "Cádiz","Cantabria","Castellón","Ciudad Real","Córdoba","La Coruña","Cuenca","Gerona","Granada","Guadalajara",
-   "Guipúzcoa","Huelva","Huesca","Islas Baleares","Jaén","León","Lérida","Lugo","Madrid","Málaga","Murcia","Navarra",
-   "Orense","Palencia","Las Palmas","Pontevedra","La Rioja","Salamanca","Segovia","Sevilla","Soria","Tarragona",
-   "Santa Cruz de Tenerife","Teruel","Toledo","Valencia","Valladolid","Vizcaya","Zamora","Zaragoza"]
-    
-    var searchedLocations: [String] {
-        guard !searchText.isEmpty else {
-            return locations
-        }
-        
-        return locations.filter({ location in
-            location.lowercased().contains(searchText.lowercased())
-        })
-    }
+
+    @StateObject var listVM = ListViewModel()
     
     var body: some View {
         NavigationStack {
-            if !searchedLocations.isEmpty {
-                List(searchedLocations, id: \.self) { locationName in
+            if !listVM.searchedLocations.isEmpty {
+                List(listVM.searchedLocations, id: \.self) { locationName in
                     NavigationLink {
                         DetailView(location: locationName)
                     } label: {
@@ -37,7 +22,7 @@ struct ListView: View {
                     }
                     .listRowBackground(Color.blue.opacity(0.1)) // Cell color
                 }
-                .navigationTitle("Weathear Pro")
+                .navigationTitle("Weather Pro Max")
                 // Top bar color when scrolling
                 .toolbarBackground(.blue.opacity(0.3))
                 // List background color
@@ -48,19 +33,19 @@ struct ListView: View {
                     Color.blue.ignoresSafeArea().opacity(0.3)
                     VStack {
                         NavigationLink {
-                            DetailView(location: searchText)
+                            DetailView(location: listVM.searchText)
                         } label: {
-                            Text("Search for \(searchText) weather")
+                            Text("Search for \(listVM.searchText) weather")
                                 .foregroundStyle(.link)
                                 .font(.system(size: 24))
                                 .bold()
                         }
                     }
-                    .navigationTitle("Weathear Pro")
+                    .navigationTitle("Weather Pro Max")
                 }
             }
         }
-        .searchable(text: $searchText)
+        .searchable(text: $listVM.searchText)
         // Top bar color when scrolling
         .toolbarBackground(.blue.opacity(0.3))
 
