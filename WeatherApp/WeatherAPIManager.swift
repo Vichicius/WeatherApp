@@ -32,7 +32,7 @@ struct APIEndpoints {
         components.queryItems = [
             URLQueryItem(name: "name", value: name),
             URLQueryItem(name: "count", value: "10"),
-            URLQueryItem(name: "language", value: "en"),
+            URLQueryItem(name: "language", value: "es"),
             URLQueryItem(name: "format", value: "json")
         ]
         return components.url!.absoluteString
@@ -60,7 +60,7 @@ class WeatherAPIManager {
         
         do {
             let data = try JSONDecoder().decode(LocationCoords.self, from: data)
-            guard let location = data.results.sorted(by: {$0.population ?? 0 > $1.population ?? 0}).first else {
+            guard let location = data.results?.sorted(by: {$0.population ?? 0 > $1.population ?? 0}).first else {
                 throw APIError.invalidData
             }
             print("Most populated location with that name: \(location.name)")
