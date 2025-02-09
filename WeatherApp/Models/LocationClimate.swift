@@ -5,7 +5,7 @@
 //  Created by Luis Martinez on 8/2/25.
 //
 
-
+// MARK: - LocationClimate
 struct LocationClimate: Codable {
     let latitude, longitude, generationtimeMS: Double
     let utcOffsetSeconds: Double
@@ -24,28 +24,30 @@ struct LocationClimate: Codable {
         case currentUnits = "current_units"
         case current
     }
-}
+    
+    // MARK: - Current
+    struct Current: Codable {
+        let time: String
+        let interval, temperature2M: Double
+        let apparentTemperature: Double
 
-// MARK: - Current
-struct Current: Codable {
-    let time: String
-    let interval, temperature2M: Double
-    let apparentTemperature: Double
-
-    enum CodingKeys: String, CodingKey {
-        case time, interval
-        case temperature2M = "temperature_2m"
-        case apparentTemperature = "apparent_temperature"
+        enum CodingKeys: String, CodingKey {
+            case time, interval
+            case temperature2M = "temperature_2m"
+            case apparentTemperature = "apparent_temperature"
+        }
     }
-}
 
-// MARK: - CurrentUnits
-struct CurrentUnits: Codable {
-    let time, interval, temperature2M, apparentTemperature: String
+    // MARK: - CurrentUnits
+    struct CurrentUnits: Codable {
+        let time, interval, temperature2M, apparentTemperature: String
 
-    enum CodingKeys: String, CodingKey {
-        case time, interval
-        case temperature2M = "temperature_2m"
-        case apparentTemperature = "apparent_temperature"
+        enum CodingKeys: String, CodingKey {
+            case time, interval
+            case temperature2M = "temperature_2m"
+            case apparentTemperature = "apparent_temperature"
+        }
     }
+
 }
+

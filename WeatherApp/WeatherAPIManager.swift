@@ -8,44 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct APIEndpoints {
-    /// https://open-meteo.com/en/docs
-
-    /// Base URLs
-    private static let weatherBaseURL = "https://api.open-meteo.com/v1/forecast"
-    private static let geocodingBaseURL = "https://geocoding-api.open-meteo.com/v1/search"
-
-    /// Temperature Endpoint
-    static func temperature(latitude: String, longitude: String) -> String {
-        var components = URLComponents(string: weatherBaseURL)!
-        components.queryItems = [
-            URLQueryItem(name: "latitude", value: latitude),
-            URLQueryItem(name: "longitude", value: longitude),
-            URLQueryItem(name: "current", value: "temperature_2m,apparent_temperature")
-        ]
-        return components.url!.absoluteString
-    }
-
-    /// Location Coordinates Endpoint
-    static func location(name: String) -> String {
-        var components = URLComponents(string: geocodingBaseURL)!
-        components.queryItems = [
-            URLQueryItem(name: "name", value: name),
-            URLQueryItem(name: "count", value: "10"),
-            URLQueryItem(name: "language", value: "es"),
-            URLQueryItem(name: "format", value: "json")
-        ]
-        return components.url!.absoluteString
-    }
-}
-
-enum APIError: Error {
-    case invalidURL
-    case invalidResponse
-    case invalidData
-}
-
-class WeatherAPIManager {
+class WeatherAPIService {
     
     static func getCoords(name: String) async throws -> (lat: String, lon: String, name: String) {
         guard let url = URL(string: APIEndpoints.location(name: name)) else {
@@ -91,4 +54,41 @@ class WeatherAPIManager {
         }
     }
     
+    struct APIEndpoints {
+        /// https://open-meteo.com/en/docs
+
+        /// Base URLs
+        private static let weatherBaseURL = "https://api.open-meteo.com/v1/forecast"
+        private static let geocodingBaseURL = "https://geocoding-api.open-meteo.com/v1/search"
+
+        /// Temperature Endpoint
+        static func temperature(latitude: String, longitude: String) -> String {
+            var components = URLComponents(string: weatherBaseURL)!
+            components.queryItems = [
+                URLQueryItem(name: "latitude", value: latitude),
+                URLQueryItem(name: "longitude", value: longitude),
+                URLQueryItem(name: "current", value: "temperature_2m,apparent_temperature")
+            ]
+            return components.url!.absoluteString
+        }
+
+        /// Location Coordinates Endpoint
+        static func location(name: String) -> String {
+            var components = URLComponents(string: geocodingBaseURL)!
+            components.queryItems = [
+                URLQueryItem(name: "name", value: name),
+                URLQueryItem(name: "count", value: "10"),
+                URLQueryItem(name: "language", value: "es"),
+                URLQueryItem(name: "format", value: "json")
+            ]
+            return components.url!.absoluteString
+        }
+    }
+
+    enum APIError: Error {
+        case invalidURL
+        case invalidResponse
+        case invalidData
+    }
+
 }
